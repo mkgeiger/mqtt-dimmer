@@ -1,11 +1,17 @@
 # MQTT dimmer
-## Overview
+## Overview (Revision unknown)
 Instead of building a Wifi dimmer by myself, which is not allways the cheapest and fastest solution, I decided to use a commercial WiFi dimmer. Focus was then more on the software than on the hardware design. The choice fell on the `Luminea NX-4653`, a one channel 230V AC dimmer, which is cheap, easy to order, easy to open and the contained ESP8266 can easily be reflashed. Also getting rid of the original firmware, which makes use of a Chinese MQTT cloud, is a good feeling. Instead, my software connects to a local self maintained MQTT broker (see other project from me).
+
+## Overview REV3_2023_07_13
+I used the `Luminea NX-4653-675`. I am going to address it as REV3.
 
 ## Hardware
 The hardware is the commercial product `Luminea NX-4653`. It is sold by PEARL (https://www.pearl.de/a-NX4653-3103.shtml) and Amazon (https://www.amazon.de/dp/B084P762LH/ref=cm_sw_em_r_mt_dp_ut0aGb4T5BBRB?_encoding=UTF8&psc=1) .
-
 <img src="/photos/nx4653.jpg" alt="drawing" width="400"/>
+
+If you buy it from PEARL as of 26.01.2024 it should be a REV3.
+<img src="/photos/nx4653-675.jpg" alt="drawing" width="400"/>
+
 
 There is an ESP8266 sitting on the microcontroller PCB. Whenever the switch S1 is pressed there are 50/60 Hz pulses detected on the ESP8266 input pin. This phase detection circuit is connected to GPIO13 of the ESP8266 chip. These pulses must be processed as a counting signal. The ESP8266 then sends commands accordingly via the hardware serial interface (UART0) for dimming operation, which are handled by a second microcontroller (STM8S003F3 MCU). The serial communication at 9600 baud is simple, just one command with changing the dimming xx values: `FF 55 xx 05 DC 0A`. Detecting pulses on GPIO13 (S1 pressed) during startup is assigned by my software to reset the Wifi settings.
 
